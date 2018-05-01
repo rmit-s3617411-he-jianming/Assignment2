@@ -5,16 +5,18 @@ package MiniNet;
  * data 2018Äê3ÔÂ22ÈÕ 22:44:04
  **/
 import java.util.*;
+
+import javax.swing.JOptionPane;
+
+import javafx.scene.chart.PieChart.Data;
 public class MiniNet {
 	HashMap children;
-	HashMap parent;
 	
-	MiniNet(){
+	MiniNet() throws Exception{
 		children = new HashMap();//initialize a Children array
-		parent = new HashMap();//initialize a parent array
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception  {
 		Scanner in = new Scanner(System.in);
 		Control admin = new Control();//initialize a control object
 		DriverClass menu = new DriverClass();//initialize a menu object 
@@ -27,15 +29,25 @@ public class MiniNet {
 				System.out.println("Please type the age of person you want to add");
 				int age = in.nextInt();
 				if(age<16) {
-					System.out.println("You are under 16, so you must provide your parent's information");
-				}else {
+					admin.createChildren(age);
+				}
+				else {
 				System.out.println("Please type the name of person you want to add");
 				String name = in.next();
 				System.out.println("Please type the status of person you want to add");
 				String status=in.next();
 				System.out.println("Please type the image name of the person you want to add,if you donot want to add,please type null");
 				String image = in.next();
-				Children per = new Children(name,age,status,image);
+				System.out.println("please type choose your gender:1.F 2.M");
+				String gender = null;
+				if(in.next().equals("1")) {
+					gender ="F";
+				}else if(in.next().equals("2")) {
+					gender ="M";
+				}
+				System.out.println("please type your states");
+				String states =in.next();
+				Children per = new Children(name,age,status,image,gender,states);
 				System.out.println(per);
 				admin.createAdult(name, per);
 				}

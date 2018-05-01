@@ -6,5 +6,5 @@ package MiniNet;
  **/
 
 public interface Print {
-	public static final String msg="\tname\tage\timage\t\tstatus";//built the basic title
+	public static final String msg="\tname\timage\t\tstatus\t\tgender\tage\tstates";//built the basic title
 }

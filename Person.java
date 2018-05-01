@@ -16,6 +16,25 @@ abstract public class Person {//every person have name, age, status, friend, ima
 	private String image;
 	private Children father;
 	private Children mother;
+	private String gender;
+	
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getStates() {
+		return states;
+	}
+
+	public void setStates(String states) {
+		this.states = states;
+	}
+
+	private String states;
 
 	Person(){
 		friend = new HashMap();
@@ -78,7 +97,7 @@ abstract public class Person {//every person have name, age, status, friend, ima
 	}
 
 	public String toString() {//override the toString method for output person basic information
-		String msg="\t"+this.name+"\t"+this.age+"\t"+this.image+"\t\t"+this.status+"\t";
+		String msg="\t"+this.name+"\t"+this.image+"\t\t"+this.status+"\t\t"+this.gender+"\t"+this.age+"\t"+this.states;
 		return msg;
 	}
 }

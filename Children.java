@@ -8,19 +8,19 @@ public class Children extends Adult {
 	private Children father;//each child has father
 	private Children mother;//each child has mother
 	private String name;
-	private int age;
+	private int		 age;
 	private String status;
 	private String image;
-
-	Children(String name,int age,String status,String image){
-//		this.name=name;
-//		this.age=age;
-//		this.status=status;
-//		this.image=image;
+	private String gender;
+	private String states;
+	
+	Children(String name,int age,String status,String image,String gender,String states){
 		this.setName(name);
 		this.setAge(age);
 		this.setStatus(status);
 		this.setImage(image);
+		this.setGender(gender);
+		this.setStates(states);
 	}
 	
 	public void setFather(Children father) {
@@ -35,15 +35,6 @@ public class Children extends Adult {
 	}
 	public Adult getMother() {
 		return this.mother;
-	}
-
-	public void setChildrenProfile(String name, int age, String status, String image,Children father,Children mother) {//set child attributes
-		super.setName(name);
-		super.setAge(age);
-		super.setStatus(status);
-		super.setImage(image);
-		super.setFather(father);
-		super.setMother(mother);
 	}
 
 }

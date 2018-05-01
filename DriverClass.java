@@ -4,14 +4,13 @@ package MiniNet;
  * @author Sam  
  * data 2018Äê3ÔÂ22ÈÕ 22:44:04
  **/
-public class DriverClass {//this class for setting the menu
-	public void menu() {
-		//System.out.println("----BasicData in the System----");
-//		System.out.println("=============================================================");
-//		for(int i=0;i<4;i++) {
-//			System.out.println(per[i]);
-//		}//just for understand this programming easily.
-//		System.out.println();
+
+//this class for setting the menu
+public class DriverClass {
+	public void menu() throws Exception {
+		System.out.println("----BasicData in the System----");
+		System.out.println("=============================================================");
+		DataBase data = new DataBase();
 		System.out.println("MiniNet Menu");
 		System.out.println("=============================================================");
 		System.out.println("----Choose what you want to do----");
