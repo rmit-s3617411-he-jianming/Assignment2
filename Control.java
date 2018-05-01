@@ -16,8 +16,9 @@ public class Control implements Print{
 		exceptions = new MyExceptions();
 	}
 
-	/*detect the person whether the age under 16 */
-	public boolean detectAge(String name1,String name2) throws MyExceptions  {//for detect the children weather conform the situation
+
+	//detect the person age
+	public boolean detectAge(String name1,String name2) throws MyExceptions  {
 		boolean a=true;//if a = true the system will judge the person is over 16 age
 		Children per1 = per1 = (Children) children.get(name1);
 		Children per2 = per2 =(Children) children.get(name2);
@@ -27,15 +28,16 @@ public class Control implements Print{
 			a =true;
 		}else if(per1.getAge()>16&&per2.getAge()>16){
 			a=true;
-		}else if(per1.getAge()>16&&per2.getAge()<16||per1.getAge()<16&&per2.getAge()>16){
+		}else if(per2.getAge()<6||per1.getAge()<6){
 			try {
-		exceptions.TooYoungException();
-		}catch(MyExceptions e) {
-			e.printStackTrace();
-			a=false;
-			return false;
-		}
-		}else if(per1.getAge()-per2.getAge()>3||per2.getAge()-per1.getAge()>3) {
+				exceptions.TooYoungException();
+			}catch(MyExceptions e) {
+				e.printStackTrace();
+				a=false;
+				return false;
+			}
+		}else if(per1.getAge()-per2.getAge()>3||per2.getAge()-per1.getAge()>3||per1.getAge()>16
+				&&per2.getAge()<16||per1.getAge()<16&&per2.getAge()>16) {
 			try {
 				exceptions.NotToBeFriendsException();
 			}catch(MyExceptions e) {
@@ -212,14 +214,15 @@ public class Control implements Print{
 
 	//4.Delect the selected person
 	public void delect(String name) {//delect the person 
-		if(children.containsKey(name))  //for judge the name whether exist.prevent a system have two same name
-		{
+		Children child = (Children) children.get(name);
+		if(children.containsKey(name)){  //for judge the name whether exist.prevent a system have two same name
+			if(child.getFather()!=null) {
+				child.getFather().setChildren(null);
+			}if(child.getMother()!=null) {
+				child.getMother().setChildren(null);
+			}
 			children.remove(name);
-		}	    
-		else if(children.containsKey(name)){
-			children.remove(name);
-		}
-		else{
+		}else{
 			System.out.println("The name is not exist");
 			return;
 		}
@@ -231,17 +234,17 @@ public class Control implements Print{
 		this.check(name2);
 		Children per1 = (Children) children.get(name1);	    
 		Children per2 = (Children) children.get(name2);
-		System.out.println("please type what kind of realtionship you want to add 1.friend 2.parent");
+		System.out.println("please type what kind of realtionship you want to add 1.friend 2.parent 3.Colleague 4.Classmate 5.couple");
 		String relationship=in.next();
 		if(relationship.equals("1")) {//make friends
-				if(this.detectAge(name1,name2)) {
-					per1.friend.put(per2.getName(),per2);//put person2(name2/per2) into person1's(name/per1) friends' list 
-					per2.friend.put(per1.getName(),per1);//put person1(name/per1) into person2's(name/per2) friends' list 
-					System.out.println("built relationship successful");
-					return;
-				}else {
-					System.out.println("they cannot be friend, update unsuccessful");
-				}
+			if(this.detectAge(name1,name2)) {
+				per1.friend.put(per2.getName(),per2);//put person2(name2/per2) into person1's(name/per1) friends' list 
+				per2.friend.put(per1.getName(),per1);//put person1(name/per1) into person2's(name/per2) friends' list 
+				System.out.println("built relationship successful");
+				return;
+			}else {
+				System.out.println("they cannot be friend, update unsuccessful");
+			}
 		}else if(relationship.equals("2")) {//set the parent
 			System.out.println("please choose what the older people is?:"+"1."+name2+" is father "+"2."+name2+" is mother");
 			String no =in.next();
@@ -253,9 +256,37 @@ public class Control implements Print{
 				per1.setFather(per2);
 			}else if(per1.getAge()<per2.getAge()||no.equals("2")) {//choose the second person is a father
 				per1.setFather(per2);
-			}
-		}
-	}
+			}else if(relationship.equals("3")) {
+				try {
+					if(per1.getAge()>16&&per2.getAge()>16||exceptions.NotToBeColleaguesException(per1, per2)) {
+						per1.colleague.put(name2,per2);
+						per2.colleague.put(name1, per1);
+						System.out.println("built relationship successful");
+						return;}
+				}catch(Exception e) {
+					System.out.println("they cannot be friend, update unsuccessful");
+				}
+			}else if(relationship.equals("4")) {
+				try {
+					if(exceptions.NotToBeClassmatesException(per1, per2)) {
+						per1.classmate.put(name2, per2);
+						per2.classmate.put(name1, per1);
+						System.out.println("built relationship successful");
+						return;
+					}
+				}catch(Exception e) {
+					System.out.println("they cannot be friend, update unsuccessful");
+				}
+			}else if(relationship.equals("5")) {
+				try {
+					if(exceptions.NoAvailableException(per1,per2)&&exceptions.NotToBeCoupledException(per1, per2)) {
+						System.out.println("built relationship successful");
+						return;
+					}
+				}catch(Exception e) {
+					System.out.println("they cannot be friend, update unsuccessful");
+				}
+			}}}
 
 	//6.Find out whether a person is a direct friend of another person
 	public void findOut(String name1,String name2) {//for find out what the relationship between two person

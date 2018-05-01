@@ -11,15 +11,17 @@ import javax.swing.JOptionPane;
 import javafx.scene.chart.PieChart.Data;
 public class MiniNet {
 	HashMap children;
-	
+
+
 	MiniNet() throws Exception{
 		children = new HashMap();//initialize a Children array
 	}
-	
-	public static void main(String[] args) throws Exception  {
+
+	public static void main(String[] args) throws MyExceptions  {
 		Scanner in = new Scanner(System.in);
 		Control admin = new Control();//initialize a control object
 		DriverClass menu = new DriverClass();//initialize a menu object 
+		MyExceptions exception = new MyExceptions();
 		while(true) {
 			menu.menu();//invoke menu method in DriverClass class
 			String number = in.next();
@@ -30,26 +32,32 @@ public class MiniNet {
 				int age = in.nextInt();
 				if(age<16) {
 					admin.createChildren(age);
+				}else if(age<0||age>150) {
+					try {
+						exception.NoSuchAgeException();
+					}catch(Exception e) {
+						System.out.println("please type age from 0 to 150");
+					}
 				}
 				else {
-				System.out.println("Please type the name of person you want to add");
-				String name = in.next();
-				System.out.println("Please type the status of person you want to add");
-				String status=in.next();
-				System.out.println("Please type the image name of the person you want to add,if you donot want to add,please type null");
-				String image = in.next();
-				System.out.println("please type choose your gender:1.F 2.M");
-				String gender = null;
-				if(in.next().equals("1")) {
-					gender ="F";
-				}else if(in.next().equals("2")) {
-					gender ="M";
-				}
-				System.out.println("please type your states");
-				String states =in.next();
-				Children per = new Children(name,age,status,image,gender,states);
-				System.out.println(per);
-				admin.createAdult(name, per);
+					System.out.println("Please type the name of person you want to add");
+					String name = in.next();
+					System.out.println("Please type the status of person you want to add");
+					String status=in.next();
+					System.out.println("Please type the image name of the person you want to add,if you donot want to add,please type null");
+					String image = in.next();
+					System.out.println("please type choose your gender:1.F 2.M");
+					String gender = null;
+					if(in.next().equals("1")) {
+						gender ="F";
+					}else if(in.next().equals("2")) {
+						gender ="M";
+					}
+					System.out.println("please type your states");
+					String states =in.next();
+					Children per = new Children(name,age,status,image,gender,states);
+					System.out.println(per);
+					admin.createAdult(name, per);
 				}
 			}else if(number.equals("2")) {
 				System.out.println("----Now display the profile of the selected person----");

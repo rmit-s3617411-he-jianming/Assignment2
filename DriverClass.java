@@ -7,7 +7,7 @@ package MiniNet;
 
 //this class for setting the menu
 public class DriverClass {
-	public void menu() throws Exception {
+	public void menu() throws MyExceptions {
 		System.out.println("----BasicData in the System----");
 		System.out.println("=============================================================");
 		DataBase data = new DataBase();
