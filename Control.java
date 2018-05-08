@@ -1,27 +1,40 @@
 package MiniNet;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.awt.*;
+import java.awt.List;
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
+
 /**  
  * @version V1.6  
  * @author jammy  
  * data 2018Äê3ÔÂ22ÈÕ 22:44:04
  **/
-import java.util.*;
-public class Control implements Print{
-	Scanner in = new Scanner(System.in);
 
+public class Control extends JFrame {
+	Scanner in = new Scanner(System.in);
+	FileWriter fw = null;
 	MyExceptions exceptions;
 	HashMap children;
+	public static HashMap Children;
+	public static String childrenOutput="Name, Image, Status, Age, Gender, States\n";
+	public static ArrayList<String> relationship = new ArrayList<String>();
 
-	Control(){
+	Control() throws Exception{
 		children = new HashMap();//initialize a Children array
 		exceptions = new MyExceptions();
+		File SystemInformation = new File("D:/IT/eclipse/HolidayPrac/src/MiniNet/DB/SystemInformation.txt");
 	}
 
 
 	//detect the person age
 	public boolean detectAge(String name1,String name2) throws MyExceptions  {
 		boolean a=true;//if a = true the system will judge the person is over 16 age
-		Children per1 = per1 = (Children) children.get(name1);
-		Children per2 = per2 =(Children) children.get(name2);
+		Children per1 =(Children) children.get(name1);
+		Children per2 =(Children) children.get(name2);
 		if(2<per1.getAge()&&per1.getAge()<16&&2<per2.getAge()&&per2.getAge()<16
 				&&per1.getFather().getName()!=per2.getFather().getName()
 				&&(per1.getAge()-per2.getAge()<3||per2.getAge()-per1.getAge()<3)){
@@ -58,111 +71,29 @@ public class Control implements Print{
 	}
 
 	//1.Add a Adult  into network
-	public void createAdult(String name,Children per) {
+	public void createAdult(String name,Children per) throws Exception {
 		if(children.containsKey(name))  //for judge the name whether exist.prevent a system have two same name
 		{
-			System.out.println("The name already exist");
+			JOptionPane.showMessageDialog(this,"The name already exist");
 		}	    
 		else
 		{
 			children.put(name, per);
-			System.out.println("Add Successfully");	    
-		}
-	}
-
-	//2.Add a children into network
-	public void createChildren(int age) {
-		Children mother = null;
-		Children father = null;
-		System.out.println("You are under 16, so you have to provide your parent's information");
-		System.out.println("please type your name");
-		String cname = in.next();
-		System.out.println("please type your status");
-		String cstatus = in.next();
-		System.out.println("please type your image");
-		String cimage = in.next();
-		System.out.println("please type choose your mother's gender:1.F 2.M");
-		String cgender = null;
-		if(in.next().equals("1")) {
-			cgender ="F";
-		}else if(in.next().equals("2")) {
-			cgender ="M";
-		}
-		System.out.println("please type your states");
-		String cstates =in.next();
-		Children per = new Children(cname,age,cstatus,cimage,cgender,cstates);
-		this.createAdult(cname, per);
-		System.out.println("please type your mother's name");
-		String mname=in.next();
-		if(children.containsKey(mname)) {
-			mother =(Children) children.get(mname);
-			System.out.println("Your mother has created a account, now connect your's relationship");
-			this.createAdult(mname, per);//create a mother account
-			per.setMother(mother);
-			mother.setChildren(per);
-		}else {
-			System.out.println("please type your mother's age");
-			int mage =in.nextInt();
-			System.out.println("please type your mother's status");
-			String mstatus =in.next();
-			System.out.println("please type your mother's image");
-			String mimage =in.next();
-			System.out.println("please type choose your mother's gender:1.F 2.M");
-			String mgender = null;
-			if(in.next().equals("1")) {
-				mgender ="F";
-			}else if(in.next().equals("2")) {
-				mgender ="M";
-			}
-			System.out.println("please type your states");
-			String mstates =in.next();
-			mother = new Children(cname,age,cstatus,mimage,mgender,mstates);
-			this.createAdult(mname, mother);
-			per.setMother(mother);
-			mother.setChildren(per);
-		}
-		System.out.println("please type your father's name");
-		String fname =in.next();
-		if(children.containsKey(fname)) {
-			father =(Children) children.get(fname);
-			System.out.println("Your mother has created a account, now connect your's relationship");
-			per.setMother(father);
-			father.setChildren(per);
-		}else {
-			System.out.println("please type your father's age");
-			int fage = in.nextInt();
-			System.out.println("please type your father's status");
-			String fstatus = in.next();
-			System.out.println("please type your father's image");
-			String fimage = in.next();
-			System.out.println("please type choose your father's gender:1.F 2.M");
-			String fgender = null;
-			if(in.next().equals("1")) {
-				fgender ="F";
-			}else if(in.next().equals("2")) {
-				fgender ="M";
-			}
-			System.out.println("please type your states");
-			String fstates =in.next();
-			father = new Children(cname,age,cstatus,fimage,fgender,fstates);
-			this.createAdult(fname, father);
-			per.setFather(per);
-			father.setChildren(per);
-			father.setCouple(mother);
-			mother.setCouple(father);
+			JOptionPane.showMessageDialog(this,"Add successfully");
 		}
 	}
 
 	//2.Display the profile of the selected person
-	public void show(String name) {//show the profile about your selected person.
+	public void show(String name) throws Exception {//show the profile about your selected person.
 		if(children.containsKey(name)) {
 			Children per = (Children) children.get(name);
-			System.out.println(msg);
 			System.out.println(per);
+			this.childrenOutput+= per.toString();
 			return;
 		}
 		else  {
-			System.out.println("the person is no exist");//if the person cannot be fond,end of the loop
+			JOptionPane.showMessageDialog(this,"the person is no exist");
+			//if the person cannot be fond,end of the loop
 			return ;
 		}
 	}
@@ -212,8 +143,8 @@ public class Control implements Print{
 		}
 	}
 
-	//4.Delect the selected person
-	public void delect(String name) {//delect the person 
+	//4.Delete the selected person
+	public void delect(String name) {//delete the person 
 		Children child = (Children) children.get(name);
 		if(children.containsKey(name)){  //for judge the name whether exist.prevent a system have two same name
 			if(child.getFather()!=null) {
@@ -222,71 +153,90 @@ public class Control implements Print{
 				child.getMother().setChildren(null);
 			}
 			children.remove(name);
+			JOptionPane.showMessageDialog(this,"Remove successfully");
 		}else{
-			System.out.println("The name is not exist");
+			JOptionPane.showMessageDialog(this,"The name already exist");
 			return;
 		}
 	}
 
-	//5.Connect two person in a meaningful way
-	public void connect(String name1,String name2) throws MyExceptions  {//connect two person in a meaningful way
+
+	//5.1 connect couple
+	public void connectCouple(String name1,String name2) throws Exception, MyExceptions {
 		this.check(name1);
 		this.check(name2);
 		Children per1 = (Children) children.get(name1);	    
 		Children per2 = (Children) children.get(name2);
-		System.out.println("please type what kind of realtionship you want to add 1.friend 2.parent 3.Colleague 4.Classmate 5.couple");
-		String relationship=in.next();
-		if(relationship.equals("1")) {//make friends
-			if(this.detectAge(name1,name2)) {
-				per1.friend.put(per2.getName(),per2);//put person2(name2/per2) into person1's(name/per1) friends' list 
-				per2.friend.put(per1.getName(),per1);//put person1(name/per1) into person2's(name/per2) friends' list 
-				System.out.println("built relationship successful");
-				return;
-			}else {
-				System.out.println("they cannot be friend, update unsuccessful");
+		if(this.detectAge(name1,name2)) {
+			try {
+				if(exceptions.NoAvailableException(per1,per2)&&exceptions.NotToBeCoupledException(per1, per2)) {
+					per1.setCouple(per2);
+					per2.setCouple(per1);
+					JOptionPane.showMessageDialog(this,"built relationship successfully");
+					System.out.println(per1.getCouple().getName());
+					return;
+				}
+			}catch(Exception e) {
+				JOptionPane.showMessageDialog(this,"connect unsuccessfully");
 			}
-		}else if(relationship.equals("2")) {//set the parent
-			System.out.println("please choose what the older people is?:"+"1."+name2+" is father "+"2."+name2+" is mother");
-			String no =in.next();
-			if(per1.getAge()>per2.getAge()||no.equals("1")) {//choose the second person is a father
-				per2.setFather(per1);
-			}else if (per1.getAge()>per2.getAge()||no.equals("2")) {//choose the second person is a mother
-				per2.setMother(per1);
-			}else if(per1.getAge()<per2.getAge()||no.equals("1")) {//choose the second person is a father
-				per1.setFather(per2);
-			}else if(per1.getAge()<per2.getAge()||no.equals("2")) {//choose the second person is a father
-				per1.setFather(per2);
-			}else if(relationship.equals("3")) {
-				try {
-					if(per1.getAge()>16&&per2.getAge()>16||exceptions.NotToBeColleaguesException(per1, per2)) {
-						per1.colleague.put(name2,per2);
-						per2.colleague.put(name1, per1);
-						System.out.println("built relationship successful");
-						return;}
-				}catch(Exception e) {
-					System.out.println("they cannot be friend, update unsuccessful");
+		}
+	}
+
+	//5.2 connect colleague
+	public void connectColleague(String name1,String name2) throws Exception, MyExceptions {
+		this.check(name1);
+		this.check(name2);
+		Children per1 = (Children) children.get(name1);	    
+		Children per2 = (Children) children.get(name2);
+		if(this.detectAge(name1,name2)) {
+			try {
+				if(per1.getAge()>16&&per2.getAge()>16||exceptions.NotToBeColleaguesException(per1, per2)) {
+					per1.colleague.put(name2,per2);
+					per2.colleague.put(name1, per1);
+					JOptionPane.showMessageDialog(this,"built relationship successfully");
+					return;
 				}
-			}else if(relationship.equals("4")) {
-				try {
-					if(exceptions.NotToBeClassmatesException(per1, per2)) {
-						per1.classmate.put(name2, per2);
-						per2.classmate.put(name1, per1);
-						System.out.println("built relationship successful");
-						return;
-					}
-				}catch(Exception e) {
-					System.out.println("they cannot be friend, update unsuccessful");
+			}catch(Exception e) {
+				JOptionPane.showMessageDialog(this,"connect unsuccessfully");
+			}
+		}
+	}
+
+	//5.3 connect classmate
+	public void connectClassmate(String name1,String name2) throws Exception, MyExceptions {
+		this.check(name1);
+		this.check(name2);
+		Children per1 = (Children) children.get(name1);	    
+		Children per2 = (Children) children.get(name2);
+		if(this.detectAge(name1,name2)) {
+			try {
+				if(exceptions.NotToBeClassmatesException(per1, per2)) {
+					per1.classmate.put(name2, per2);
+					per2.classmate.put(name1, per1);
+					JOptionPane.showMessageDialog(this,"built relationship successfully");
+					return;
 				}
-			}else if(relationship.equals("5")) {
-				try {
-					if(exceptions.NoAvailableException(per1,per2)&&exceptions.NotToBeCoupledException(per1, per2)) {
-						System.out.println("built relationship successful");
-						return;
-					}
-				}catch(Exception e) {
-					System.out.println("they cannot be friend, update unsuccessful");
-				}
-			}}}
+			}catch(Exception e) {
+				JOptionPane.showMessageDialog(this,"connect unsuccessfully");
+			}
+		}
+	}
+
+	//5.4 connect friend
+	public void connectFriend(String name1,String name2) throws MyExceptions {
+		this.check(name1);
+		this.check(name2);
+		Children per1 = (Children) children.get(name1);	    
+		Children per2 = (Children) children.get(name2);
+		if(this.detectAge(name1,name2)) {
+			per1.friend.put(per2.getName(),per2);//put person2(name2/per2) into person1's(name/per1) friends' list 
+			per2.friend.put(per1.getName(),per1);//put person1(name/per1) into person2's(name/per2) friends' list 
+			JOptionPane.showMessageDialog(this,"built relationship successfully");
+			return;
+		}else {
+			JOptionPane.showMessageDialog(this,"connect unsuccessfully");
+		}
+	}
 
 	//6.Find out whether a person is a direct friend of another person
 	public void findOut(String name1,String name2) {//for find out what the relationship between two person
@@ -345,18 +295,103 @@ public class Control implements Print{
 
 	//8.Show all people profile
 	public void print() {
-		System.out.println(msg);
 		Iterator it = children.keySet().iterator();
 		while(it.hasNext()){
 			String key =it.next().toString();
 			Children children1 = (Children) children.get(key);
-			System.out.println(children1);
+			childrenOutput+= children1.toString()+"\n";
+			System.out.println(childrenOutput);
 		}
 	}
 
 	//9.According to the selected name,display the list of friends
 	public void display(String name) {
 		Children aa = (Children) children.get(name);
-		aa.getFriend();
+		Iterator it = aa.friend.keySet().iterator();
+		while(it.hasNext()){
+			String key =it.next().toString();
+			Children children1 = (Children) children.get(key);
+			childrenOutput+= aa.getName()+","+children1.getName()+",friend\n";
+			System.out.println(childrenOutput);
+		}
+	}
+
+	//10.According to the selected name,display the couple
+	public void showCouple(String name) {
+		Children aa = (Children) children.get(name);
+		childrenOutput+= aa.getName()+","+aa.getCouple()+",couple\n";
+		System.out.println(childrenOutput);
+	}
+
+	//11.According to the selected name,display the colleague
+	public void showColleague(String name) {
+		Children aa = (Children) children.get(name);
+		Iterator it = aa.colleague.keySet().iterator();
+		while(it.hasNext()){
+			String key =it.next().toString();
+			Children children1 = (Children) children.get(key);
+			childrenOutput+= children1.toString()+"\n";
+			System.out.println(childrenOutput);
+		}
+	}
+
+	//12.According to the selected name,display the classmate
+	public void showClassmate(String name) {
+		Children aa = (Children) children.get(name);
+		Iterator it = aa.classmate.keySet().iterator();
+		while(it.hasNext()){
+			String key =it.next().toString();
+			Children children1 = (Children) children.get(key);
+			childrenOutput+= children1.toString()+"\n";
+			System.out.println(childrenOutput);
+		}
+	}
+
+	//12.According to the selected name,display the parents
+	public void showParents(String name) {
+		Children aa = (Children) children.get(name);
+		childrenOutput+= aa.getFather().toString()+"\n"+aa.getMother().toString();
+		System.out.println(childrenOutput);
+	}
+
+	//13.According to the selected name,display the classmate
+	public void showRelationship(String name) {
+		int i =0;
+		Children aa = (Children) children.get(name);
+		Iterator classmate = aa.classmate.keySet().iterator();
+		while(classmate.hasNext()){
+			String key =classmate.next().toString();
+			Children children1 = (Children) children.get(key);
+			String a= name+","+children1.getName()+",classmate\n";
+			relationship.add(a);
+		}
+		Iterator colleague = aa.colleague.keySet().iterator();
+		while(colleague.hasNext()){
+			String key =colleague.next().toString();
+			Children children1 = (Children) children.get(key);
+			String a= name+","+children1.getName()+",colleague\n";
+			relationship.add(a);
+		}
+		Iterator friend = aa.friend.keySet().iterator();
+		while(friend.hasNext()){
+			String key =colleague.next().toString();
+			Children children1 = (Children) children.get(key);
+			String a= name+","+children1.getName()+",friend\n";
+			relationship.add(a);
+		}
+		if(aa.getFather()!=null&&aa.getMother()!=null) {
+		String a= name+","+aa.getFather().getName()+",parent\n";
+		relationship.add(a);
+		String b= name+","+aa.getMother().getName()+",parent\n";
+		relationship.add(b);
+		}
+		if(aa.getCouple()!=null) {
+		String a= name+","+aa.getCouple().getName()+",couple\n";
+		relationship.add(a);
+		}
+		Collections.sort(relationship);
+		for(int j=0;j<relationship.size();j++) {
+			childrenOutput+= relationship.get(0)+"\n";
+		}
 	}
 }

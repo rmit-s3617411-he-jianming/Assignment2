@@ -2,14 +2,14 @@ package MiniNet;
 
 import javax.swing.JOptionPane;
 
-public class MyExceptions extends Exception{
+public class MyExceptions extends Exception {
 	public MyExceptions() {
 		super();
 	}
 
 	public MyExceptions(String msg) {
 		super(msg);
-		System.out.println("Error message is: " + msg);
+		System.err.println("Error message is: " + msg);
 	}
 
 	public MyExceptions(String msg, Throwable cause) {

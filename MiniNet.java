@@ -12,12 +12,11 @@ import javafx.scene.chart.PieChart.Data;
 public class MiniNet {
 	HashMap children;
 
-
 	MiniNet() throws Exception{
 		children = new HashMap();//initialize a Children array
 	}
 
-	public static void main(String[] args) throws MyExceptions  {
+	public static void main(String[] args) throws Exception  {
 		Scanner in = new Scanner(System.in);
 		Control admin = new Control();//initialize a control object
 		DriverClass menu = new DriverClass();//initialize a menu object 
@@ -31,12 +30,12 @@ public class MiniNet {
 				System.out.println("Please type the age of person you want to add");
 				int age = in.nextInt();
 				if(age<16) {
-					admin.createChildren(age);
+					
 				}else if(age<0||age>150) {
 					try {
 						exception.NoSuchAgeException();
 					}catch(Exception e) {
-						System.out.println("please type age from 0 to 150");
+						System.err.println("please type age from 0 to 150");
 					}
 				}
 				else {

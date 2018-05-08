@@ -101,7 +101,7 @@ abstract public class Person {//every person have name, age, status, friend, ima
 	}
 
 	public String toString() {//override the toString method for output person basic information
-		String msg="\t"+this.name+"\t"+this.image+"\t\t"+this.status+"\t\t"+this.gender+"\t"+this.age+"\t"+this.states;
+		String msg=this.name+", "+this.image+", "+this.status+", "+this.gender+", "+this.age+", "+this.states;
 		return msg;
 	}
 }

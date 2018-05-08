@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
 import javax.swing.table.*;
+import java.io.*;
 
 class DataBase extends AbstractTableModel 
 {
@@ -13,6 +14,7 @@ class DataBase extends AbstractTableModel
 	PreparedStatement ps=null;
     Connection ct=null;
     ResultSet rs=null;
+    FileReader file = null;
     
 	public int getRowCount()
 	{
@@ -27,10 +29,12 @@ class DataBase extends AbstractTableModel
 		return ((Vector)this.jilu.get(hang)).get(lie);
 	}
 	
-	public DataBase()
+	public DataBase() throws FileNotFoundException
 	{
+		
 		this.sqlyj("select * from children");
-	}
+	
+		}
 	public DataBase(String ss)
 	{
 		this.sqlyj(ss);
