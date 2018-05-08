@@ -41,6 +41,7 @@ public class MiniNet extends JFrame implements ActionListener {
 	FileReader wjl=null;   
 	BufferedReader hcl=null;
 	Control control=null;
+	DataBase d =null;
 	static Children [] a= new Children[3];//for store new person
 
 	public static void main(String[] args) throws Exception {
@@ -82,7 +83,7 @@ public class MiniNet extends JFrame implements ActionListener {
 		an19.addActionListener(this);
 		an19.setActionCommand("ShowConnectionChain");
 		mb1.add(bq11); mb1.add(wbk11); mb1.add(an11); mb1.add(an11);mb1.add(an12);
-//		mb1.add(an13); mb1.add(an14);mb1.add(an15);mb1.add(an16); mb1.add(an17);
+		//		mb1.add(an13); mb1.add(an14);mb1.add(an15);mb1.add(an16); mb1.add(an17);
 		mb1.add(an18);mb1.add(an19);
 
 		mb2=new JPanel();
@@ -110,6 +111,25 @@ public class MiniNet extends JFrame implements ActionListener {
 		wbk31=new JTextArea();
 		wbk31.setEditable(false);
 		gd31 = new JScrollPane(wbk31);
+
+		d= new DataBase();
+
+		String name1="Alex Smith";
+		String name2="Ben Turner";
+		String name3="Hannah White";
+		String name4="Zoe Foster";
+		String name5="Mark Turner";
+		Children per1 = new Children("Alex Smith","¡°¡±","¡°student at RMIT¡±","M",21,"WA");
+		Children per2 = new Children("Ben Turner","¡°BenPhoto.jpg¡±","¡°manager at Coles¡±","M",35,"VIC");
+		Children per3 = new Children("Hannah White","¡°Hannah.png¡±","¡°student at PLC¡±","F",14,"VIC");
+		Children per4 = new Children("Zoe Foster","¡°¡±","¡°Founder of ZFX¡±","F",28,"VIC");		
+		Children per5 = new Children("Mark Turner","¡°Mark.jpeg¡±","¡°¡±","M",2,"VIC");
+		control.createAdult(name1, per1);
+		control.createAdult(name2, per2);
+		control.createAdult(name3, per3);
+		control.createAdult(name4, per4);
+		control.createAdult(name5, per5);
+
 		FileReader wjl=null;    BufferedReader hcl=null;//show the data
 		try
 		{
@@ -201,29 +221,16 @@ public class MiniNet extends JFrame implements ActionListener {
 
 		}
 		else if(e.getActionCommand().equals("ShowAll")){
-			control.childrenOutput="Name, Image, Status, Age, Gender, States\n";;
+			control.childrenOutput="Name, Image, Status, Gender, Age, States\n";;
 			control.print();
 			wbk31.setText(control.childrenOutput);
 		}
 		else if(e.getActionCommand().equals("ShowRelationship")){
 			String name =wbk11.getText();
-			control.childrenOutput="Name, Image, Status, Age, Gender, States\n";;
+			control.childrenOutput="Name1, Name2, Relationship\n";;
 			control.showRelationship(name);
 			wbk31.setText(control.childrenOutput);
 		}
-//		else if(e.getActionCommand().equals("ShowCouple")){
-//
-//
-//		}
-//		else if(e.getActionCommand().equals("ShowColleague")){
-//
-//		}
-//		else if(e.getActionCommand().equals("ShowClassmate")){
-//
-//		}
-//		else if(e.getActionCommand().equals("ShowFriends")){	
-//			
-//		}
 		else if(e.getActionCommand().equals("Delect")){
 			String name = wbk21.getText();
 			control.delect(name);
@@ -285,24 +292,18 @@ public class MiniNet extends JFrame implements ActionListener {
 			}
 			String gender = wbk45.getText();
 			String states = wbk46.getText();
-			Children per = new Children(name,age,status,image,gender,states);
+			Children per = new Children(name,status,image,gender,age,states);
 
 			try {
 				if(age>16&&age<150){
 					control.createAdult(name, per);
 					Children children = (Children) control.children.get(name);
-					System.out.println(children.getName());
+					JOptionPane.showMessageDialog(this,"Add successfully");
 				}else if(age<16) {
 					JOptionPane.showMessageDialog(this,"You are under 16, so you have to provide your parent's information");
-					JOptionPane.showMessageDialog(this,"Now,type your mother information and click 'Add' button");
+					JOptionPane.showMessageDialog(this,"Now,type your fother information and click 'Add' button");
 					control.createAdult(name, per);
 					a[0]=per;
-					a[0].setMother(this.a[1]);
-					a[0].setFather(this.a[2]);
-					a[1].setCouple(this.a[2]);
-					a[1].setChildren(this.a[0]);
-					a[2].setCouple(this.a[1]);
-					a[2].setChildren(this.a[0]);
 				}else if(age<0||age>150) {
 					JOptionPane.showMessageDialog(this,"please type age from 0 to 150");
 				}}catch(Exception e1) {
@@ -328,7 +329,7 @@ public class MiniNet extends JFrame implements ActionListener {
 			}
 			String gender = wbk45.getText();
 			String states = wbk46.getText();
-			Children per = new Children(name,age,status,image,gender,states);
+			Children per = new Children(name,status,image,gender,age,states);
 			try {
 				control.createAdult(name, per);
 			} catch (Exception e1) {
@@ -336,7 +337,7 @@ public class MiniNet extends JFrame implements ActionListener {
 				e1.printStackTrace();
 			}
 			a[1]=per;
-			JOptionPane.showMessageDialog(this,"Now,type your father information and click 'Add' button");
+			JOptionPane.showMessageDialog(this,"Now,type your mather information and click 'Add' button");
 		}
 		else if(e.getActionCommand().equals("AddMother")){
 			String name = wbk41.getText();
@@ -354,7 +355,7 @@ public class MiniNet extends JFrame implements ActionListener {
 			}
 			String gender = wbk45.getText();
 			String states = wbk46.getText();
-			Children per = new Children(name,age,status,image,gender,states);
+			Children per = new Children(name,status,image,gender,age,states);
 			try {
 				control.createAdult(name, per);
 			} catch (Exception e1) {
@@ -362,7 +363,13 @@ public class MiniNet extends JFrame implements ActionListener {
 				e1.printStackTrace();
 			}
 			a[2]=per;
-			
+			a[0].setMother(this.a[1]);
+			a[0].setFather(this.a[2]);
+			a[1].setCouple(this.a[2]);
+			a[1].setChildren(this.a[0]);
+			a[2].setCouple(this.a[1]);
+			a[2].setChildren(this.a[0]);
+			JOptionPane.showMessageDialog(this,"Add successfully");
 		}
 
 	}

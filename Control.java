@@ -79,7 +79,6 @@ public class Control extends JFrame {
 		else
 		{
 			children.put(name, per);
-			JOptionPane.showMessageDialog(this,"Add successfully");
 		}
 	}
 
@@ -362,36 +361,40 @@ public class Control extends JFrame {
 		while(classmate.hasNext()){
 			String key =classmate.next().toString();
 			Children children1 = (Children) children.get(key);
-			String a= name+","+children1.getName()+",classmate\n";
+			String a= name+","+children1.getName()+",classmate";
 			relationship.add(a);
 		}
 		Iterator colleague = aa.colleague.keySet().iterator();
 		while(colleague.hasNext()){
 			String key =colleague.next().toString();
 			Children children1 = (Children) children.get(key);
-			String a= name+","+children1.getName()+",colleague\n";
+			String a= name+","+children1.getName()+",colleague";
 			relationship.add(a);
 		}
 		Iterator friend = aa.friend.keySet().iterator();
 		while(friend.hasNext()){
 			String key =colleague.next().toString();
 			Children children1 = (Children) children.get(key);
-			String a= name+","+children1.getName()+",friend\n";
+			String a= name+","+children1.getName()+",friend";
 			relationship.add(a);
 		}
 		if(aa.getFather()!=null&&aa.getMother()!=null) {
-		String a= name+","+aa.getFather().getName()+",parent\n";
-		relationship.add(a);
-		String b= name+","+aa.getMother().getName()+",parent\n";
-		relationship.add(b);
+			String a= name+","+aa.getFather().getName()+",parent";
+			relationship.add(a);
+			String b= name+","+aa.getMother().getName()+",parent";
+			relationship.add(b);
 		}
 		if(aa.getCouple()!=null) {
-		String a= name+","+aa.getCouple().getName()+",couple\n";
-		relationship.add(a);
+			String a= name+","+aa.getCouple().getName()+",couple";
+			relationship.add(a);
+		}
+		if(aa.getChildren()!=null) {
+			String a= name+","+aa.getChildren().getName()+",parent";
+			relationship.add(a);
 		}
 		Collections.sort(relationship);
 		for(int j=0;j<relationship.size();j++) {
-			childrenOutput+= relationship.get(0)+"\n";
+			childrenOutput+= relationship.get(j)+"\n";
 		}
 	}
 }

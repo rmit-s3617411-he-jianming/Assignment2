@@ -14,7 +14,7 @@ public class Children extends Adult {
 	private String gender;
 	private String states;
 	
-	Children(String name,int age,String status,String image,String gender,String states){
+	Children(String name,String status,String image,String gender,int age,String states){
 		this.setName(name);
 		this.setAge(age);
 		this.setStatus(status);

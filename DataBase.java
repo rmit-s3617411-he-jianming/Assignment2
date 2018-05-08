@@ -10,7 +10,7 @@ public class DataBase {
     /**
      * @param args
      */
-    public static void main(String[] args){
+    public DataBase(){
         try {
                 //加载HSQLDB数据库JDBC驱动
                 Class.forName("org.hsqldb.jdbcDriver");
@@ -24,8 +24,11 @@ public class DataBase {
                 state.executeUpdate("create table children (Name VARCHAR(20), Image VARCHAR(20),Status VARCHAR(20),Age VARCHAR(20),Gender VARCHAR(20),states VARCHAR(20))");
                 System.out.println("Create is  OK！");
                 
-                state.executeUpdate("Insert into children (Name, Image,Status,Age,Gender,states) Values('sd', '潘永刚','sd', '潘永刚','sd', '潘永刚')");
-                state.executeUpdate("Insert into children (Name, Image,Status,Age,Gender,states) Values('sd', '刘德华','sd', '刘德华','sd', '刘德华')");
+                state.executeUpdate("Insert into children (Name, Image,Status,Gender,Age,states) Values('Alex Smith', '', 'student at RMIT', 'M', 21, 'WA')");
+                state.executeUpdate("Insert into children (Name, Image,Status,Gender,Age,states) Values('Ben Turner', '“BenPhoto.jpg”', '“manager at Coles”', 'M', '35', 'VIC')");
+                state.executeUpdate("Insert into children (Name, Image,Status,Gender,Age,states) Values('Hannah White', '“Hannah.png”', '“student at PLC”', 'F', '14', 'VIC')");
+                state.executeUpdate("Insert into children (Name, Image,Status,Gender,Age,states) Values('Zoe Foster','“”', '“Founder of ZFX”', 'F', '28', 'VIC')");
+                state.executeUpdate("Insert into children (Name, Image,Status,Gender,Age,states) Values('Mark Turner', '“Mark.jpeg”', '“”', 'M', '2', 'VIC')");        
                 System.out.println("Insert is OK！");
                 
                 PreparedStatement pstmt2   =   connect.prepareStatement("select * from children");   
