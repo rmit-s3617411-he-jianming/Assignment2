@@ -1,112 +1,369 @@
 package MiniNet;
-/**  
- * @version: V1.6 
- * @author jammy  
- * data 2018Äê3ÔÂ22ÈÕ 22:44:04
- **/
+
+import java.awt.*;
+import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.*;
 import java.util.*;
+import javax.swing.*;
 
-import javax.swing.JOptionPane;
+public class MiniNet extends JFrame implements ActionListener {
+	JPanel mb1;
+	JLabel bq11; 
+	JTextField wbk11;
+	JButton an11,an12,an13,an14,an15,an16,an17,an18,an19;
 
-import javafx.scene.chart.PieChart.Data;
-public class MiniNet {
-	HashMap children;
+	JPanel mb2;
+	JLabel bq21;
+	JTextField wbk21;
+	JButton an21,an22,an23,an24,an25;
 
-	MiniNet() throws Exception{
-		children = new HashMap();//initialize a Children array
+	JPanel mb3; 
+	JTextArea wbk31;
+	JScrollPane gd31;
+
+	JPanel mb4;
+	JLabel bq41,bq42,bq43,bq44,bq45,bq46;
+	JTextField wbk41,wbk42,wbk43,wbk44,wbk45,wbk46;
+
+	JPanel mb41;
+	JButton an411,an412,an413,an414;
+
+
+	JPanel mb5;//for storing mb1&&mb2
+	JPanel mb6;//for storing mb4&&mb41
+
+	FileReader wjl=null;   
+	BufferedReader hcl=null;
+	Control control=null;
+	static Children [] a= new Children[3];//for store new person
+
+	public static void main(String[] args) throws Exception {
+		MiniNet m= new MiniNet();
 	}
 
-	public static void main(String[] args) throws Exception  {
-		Scanner in = new Scanner(System.in);
-		Control admin = new Control();//initialize a control object
-		DriverClass menu = new DriverClass();//initialize a menu object 
-		MyExceptions exception = new MyExceptions();
-		while(true) {
-			menu.menu();//invoke menu method in DriverClass class
-			String number = in.next();
-			//for giving the tips to user what they can do
-			if(number.equals("1")) {
-				System.out.println("----Now add a person into network----");
-				System.out.println("Please type the age of person you want to add");
-				int age = in.nextInt();
-				if(age<16) {
-					
-				}else if(age<0||age>150) {
-					try {
-						exception.NoSuchAgeException();
-					}catch(Exception e) {
-						System.err.println("please type age from 0 to 150");
-					}
-				}
-				else {
-					System.out.println("Please type the name of person you want to add");
-					String name = in.next();
-					System.out.println("Please type the status of person you want to add");
-					String status=in.next();
-					System.out.println("Please type the image name of the person you want to add,if you donot want to add,please type null");
-					String image = in.next();
-					System.out.println("please type choose your gender:1.F 2.M");
-					String gender = null;
-					if(in.next().equals("1")) {
-						gender ="F";
-					}else if(in.next().equals("2")) {
-						gender ="M";
-					}
-					System.out.println("please type your states");
-					String states =in.next();
-					Children per = new Children(name,age,status,image,gender,states);
-					System.out.println(per);
-					admin.createAdult(name, per);
-				}
-			}else if(number.equals("2")) {
-				System.out.println("----Now display the profile of the selected person----");
-				System.out.println("Please type the name of person you want to select");
-				String name = in.next();
-				admin.show(name);
-			}else if(number.equals("3")) {
-				System.out.println("----Now update the profile infromation of the selected person----");
-				System.out.println("Please type the name of person you want to upadate");
-				String name = in.next();
-				admin.updateProfile(name);
-			}else if(number.equals("4")) {
-				System.out.println("----Now delect the selected person----");
-				System.out.println("please type the name of person you want to delect");
-				String name = in.next();
-				admin.delect(name);
-			}else if(number.equals("5")) {
-				System.out.println("----Now connect two person in a meaningful way----");
-				System.out.println("please type the name of the first person you want to connect");
-				String name = in.next();
-				System.out.println("please type the name of the second person you want to connect");
-				String name2 = in.next();
-				admin.connect(name, name2);
-			}else if(number.equals("6")) {
-				System.out.println("----Now find out whether a person is a direct friend of another person----");
-				System.out.println("please type the name of the first person you want to find out");
-				String name1 =in.next();
-				System.out.println("please type the name of the second person you want to find out");
-				String name2 =in.next();
-				admin.findOut(name1, name2);
-			}else if(number.equals("7")) {
-				System.out.println("----Now find out the name(s) of a person¡¯s child(ren) or the names of the parents----");
-				System.out.println("please type the name of person you want to find out");
-				String name = in.next();
-				admin.findParent(name);
-			}else if(number.equals("8")) {
-				System.out.println("----Now show all the person profile----");
-				admin.print();
-			}else if(number.equals("9")) {
-				System.out.println("----Now according to the selected name,display the list of friedns----");
-				System.out.println("----Please type the name of person you want to display his/her friends' list----");
-				String name = in.next();
-				System.out.println(name+"'s list of friends");
-				admin.display(name);
-			}else if(number.equals("0")) {
-				System.out.println("end of program");
-				System.exit(0);
-			}else {
-				System.out.println("please type right number");
+	public MiniNet() throws Exception
+	{
+		control= new Control();
+
+		mb1=new JPanel();
+		bq11=new JLabel("Name1:");
+		wbk11=new JTextField(10);
+		an11=new JButton("Search");
+		an11.addActionListener(this);
+		an11.setActionCommand("Search");
+		an12=new JButton("ShowAll");
+		an12.addActionListener(this);
+		an12.setActionCommand("ShowAll");
+		an13=new JButton("ShowCouple");
+		an13.addActionListener(this);
+		an13.setActionCommand("ShowCouple");
+		an14=new JButton("ShowColleague");
+		an14.addActionListener(this);
+		an14.setActionCommand("ShowColleague");
+		an15=new JButton("ShowClassmate");
+		an15.addActionListener(this);
+		an15.setActionCommand("ShowClassmate");
+		an16=new JButton("ShowFriends");
+		an16.addActionListener(this);
+		an16.setActionCommand("showFriends");
+		an17=new JButton("ShowParent");
+		an17.addActionListener(this);
+		an17.setActionCommand("showParent");
+		an18=new JButton("ShowRelationship");
+		an18.addActionListener(this);
+		an18.setActionCommand("ShowRelationship");
+		an19=new JButton("ShowConnectionChain");
+		an19.addActionListener(this);
+		an19.setActionCommand("ShowConnectionChain");
+		mb1.add(bq11); mb1.add(wbk11); mb1.add(an11); mb1.add(an11);mb1.add(an12);
+//		mb1.add(an13); mb1.add(an14);mb1.add(an15);mb1.add(an16); mb1.add(an17);
+		mb1.add(an18);mb1.add(an19);
+
+		mb2=new JPanel();
+		bq21 =new JLabel("Name2:");
+		wbk21 = new JTextField(10);
+		an21=new JButton("Delete");
+		an21.addActionListener(this);
+		an21.setActionCommand("Delete");
+		an22=new JButton("ConnectCouple");
+		an22.addActionListener(this);
+		an22.setActionCommand("ConnectCouple");
+		an23=new JButton("ConnectColleague");
+		an23.addActionListener(this);
+		an23.setActionCommand("ConnectColleague");
+		an24=new JButton("ConnectClassmate");
+		an24.addActionListener(this);
+		an24.setActionCommand("ConnectClassmate");
+		an25=new JButton("ConnectFriend");
+		an25.addActionListener(this);
+		an25.setActionCommand("ConnectFriend");
+		mb2.add(bq21); mb2.add(wbk21);
+		mb2.add(an21); mb2.add(an22); mb2.add(an23); mb2.add(an24); mb2.add(an25);
+
+		mb3 = new JPanel();
+		wbk31=new JTextArea();
+		wbk31.setEditable(false);
+		gd31 = new JScrollPane(wbk31);
+		FileReader wjl=null;    BufferedReader hcl=null;//show the data
+		try
+		{
+			wjl=new FileReader("D:/IT/eclipse/HolidayPrac/src/MiniNet/people.txt");
+			hcl=new BufferedReader(wjl);
+			String s="",zfc="";
+			while((s=hcl.readLine())!=null)
+			{
+				zfc+=(s+"\n");
+			}    	
+			wbk31.setText(zfc);
+		}
+		catch(Exception aa){}
+		finally
+		{
+			try 
+			{
+				wjl.close();
+				hcl.close();
+			} 
+			catch (Exception e1) {}
+		}
+
+		mb4 = new JPanel();
+		bq41 = new JLabel("Name");
+		wbk41 = new JTextField(10);
+		bq42 = new JLabel("Image");
+		wbk42 = new JTextField(10);
+		bq43 = new JLabel("Status");
+		wbk43 = new JTextField(10);
+		bq44 = new JLabel("Age");
+		wbk44 = new JTextField(10);
+		bq45 = new JLabel("Gender");
+		wbk45 = new JTextField(10);
+		bq46 = new JLabel("States");
+		wbk46 = new JTextField(10);
+		mb4.add(bq41); mb4.add(wbk41); mb4.add(bq42); mb4.add(wbk42); mb4.add(bq43); mb4.add(wbk43); 
+		mb4.add(bq44); mb4.add(wbk44); mb4.add(bq45); mb4.add(wbk45); mb4.add(bq46); mb4.add(wbk46);  
+
+		mb41 = new JPanel();
+		an411 = new JButton("Add");
+		an411.addActionListener(this);
+		an411.setActionCommand("Add");
+		an412 = new JButton("Modify");
+		an412.addActionListener(this);
+		an412.setActionCommand("Modify");
+		an413 = new JButton("AddFather");
+		an413.addActionListener(this);
+		an413.setActionCommand("AddFather");
+		an414 = new JButton("AddMother");
+		an414.addActionListener(this);
+		an414.setActionCommand("AddMother");
+		mb41.add(an411); mb41.add(an412); mb41.add(an413); mb41.add(an414);
+
+		mb5 = new JPanel();
+		mb5.setLayout(new GridLayout(2,1));
+		mb5.add(mb1);
+		mb5.add(mb2);
+
+		mb6 = new JPanel();
+		mb6.setLayout(new GridLayout(2,1));
+		mb6.add(mb4,"North");
+		mb6.add(mb41,"South");
+
+		this.add(gd31);
+		this.add(mb5,"North");
+		this.add(mb6,"South");
+
+		this.setTitle("MiniNet");
+		this.setSize(1000,700);
+		this.setLocation(200,90);
+		this.setResizable(false);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);	
+
+	}
+	public void actionPerformed(ActionEvent e)
+	{
+		if(e.getActionCommand().equals("Search")){	
+			String name =wbk11.getText();
+			try {
+				control.childrenOutput="Name, Image, Status, Age, Gender, States\n";
+				control.show(name);
+				wbk31.setText(control.childrenOutput);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		}
+		else if(e.getActionCommand().equals("ShowAll")){
+			control.childrenOutput="Name, Image, Status, Age, Gender, States\n";;
+			control.print();
+			wbk31.setText(control.childrenOutput);
+		}
+		else if(e.getActionCommand().equals("ShowRelationship")){
+			String name =wbk11.getText();
+			control.childrenOutput="Name, Image, Status, Age, Gender, States\n";;
+			control.showRelationship(name);
+			wbk31.setText(control.childrenOutput);
+		}
+//		else if(e.getActionCommand().equals("ShowCouple")){
+//
+//
+//		}
+//		else if(e.getActionCommand().equals("ShowColleague")){
+//
+//		}
+//		else if(e.getActionCommand().equals("ShowClassmate")){
+//
+//		}
+//		else if(e.getActionCommand().equals("ShowFriends")){	
+//			
+//		}
+		else if(e.getActionCommand().equals("Delect")){
+			String name = wbk21.getText();
+			control.delect(name);
+		}
+		else if(e.getActionCommand().equals("ConnectCouple")){
+			String name1 = wbk11.getText();
+			String name2 = wbk21.getText();
+			try {
+				control.connectCouple(name1, name2);
+			} catch (MyExceptions e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 		}
+		else if(e.getActionCommand().equals("ConnectColleague")){
+			String name1 = wbk11.getText();
+			String name2 = wbk21.getText();
+			try {
+				control.connectColleague(name1, name2);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		else if(e.getActionCommand().equals("ConnectClassmate")){
+			String name1 = wbk11.getText();
+			String name2 = wbk21.getText();
+			try {
+				control.connectClassmate(name1, name2);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		else if(e.getActionCommand().equals("ConnectFriend")){
+			String name1 = wbk11.getText();
+			String name2 = wbk21.getText();
+			try {
+				control.connectFriend(name1, name2);
+			} catch (MyExceptions e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		else if(e.getActionCommand().equals("Add")){
+
+			String name = wbk41.getText();
+			String image = wbk42.getText();
+			String status = wbk43.getText();
+			String age1 = wbk44.getText();
+			int age = 0;
+			try {
+				age = Integer.parseInt(age1);
+			} catch (NumberFormatException e1) {
+				e1.printStackTrace();
+			}
+			String gender = wbk45.getText();
+			String states = wbk46.getText();
+			Children per = new Children(name,age,status,image,gender,states);
+
+			try {
+				if(age>16&&age<150){
+					control.createAdult(name, per);
+					Children children = (Children) control.children.get(name);
+					System.out.println(children.getName());
+				}else if(age<16) {
+					JOptionPane.showMessageDialog(this,"You are under 16, so you have to provide your parent's information");
+					JOptionPane.showMessageDialog(this,"Now,type your mother information and click 'Add' button");
+					control.createAdult(name, per);
+					a[0]=per;
+					a[0].setMother(this.a[1]);
+					a[0].setFather(this.a[2]);
+					a[1].setCouple(this.a[2]);
+					a[1].setChildren(this.a[0]);
+					a[2].setCouple(this.a[1]);
+					a[2].setChildren(this.a[0]);
+				}else if(age<0||age>150) {
+					JOptionPane.showMessageDialog(this,"please type age from 0 to 150");
+				}}catch(Exception e1) {
+					e1.printStackTrace();
+				}
+		}
+		else if(e.getActionCommand().equals("Modify")){
+
+		}
+		else if(e.getActionCommand().equals("AddFather")){
+			String name = wbk41.getText();
+			String image = wbk42.getText();
+			String status = wbk43.getText();
+			String age1 = wbk44.getText();
+			int age = 0;
+			try {
+				age = Integer.parseInt(age1);
+				if(age<16||age<0||age>150) {
+					JOptionPane.showMessageDialog(this,"please type a right age");
+				}
+			} catch (NumberFormatException e1) {
+				e1.printStackTrace();
+			}
+			String gender = wbk45.getText();
+			String states = wbk46.getText();
+			Children per = new Children(name,age,status,image,gender,states);
+			try {
+				control.createAdult(name, per);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			a[1]=per;
+			JOptionPane.showMessageDialog(this,"Now,type your father information and click 'Add' button");
+		}
+		else if(e.getActionCommand().equals("AddMother")){
+			String name = wbk41.getText();
+			String image = wbk42.getText();
+			String status = wbk43.getText();
+			String age1 = wbk44.getText();
+			int age = 0;
+			try {
+				age = Integer.parseInt(age1);
+				if(age<16||age<0||age>150) {
+					JOptionPane.showMessageDialog(this,"please type a right age");
+				}
+			} catch (NumberFormatException e1) {
+				e1.printStackTrace();
+			}
+			String gender = wbk45.getText();
+			String states = wbk46.getText();
+			Children per = new Children(name,age,status,image,gender,states);
+			try {
+				control.createAdult(name, per);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			a[2]=per;
+			
+		}
+
 	}
 }

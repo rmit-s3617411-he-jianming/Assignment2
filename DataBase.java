@@ -4,93 +4,48 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Vector;
-import javax.swing.table.*;
-import java.io.*;
-
-class DataBase extends AbstractTableModel 
-{
-	Vector ziduan,jilu;
-	PreparedStatement ps=null;
-    Connection ct=null;
-    ResultSet rs=null;
-    FileReader file = null;
-    
-	public int getRowCount()
-	{
-		return this.jilu.size();
-	}
-    public int getColumnCount()
-    {
-		return this.ziduan.size();
-	}
-	public Object getValueAt(int hang, int lie)
-	{
-		return ((Vector)this.jilu.get(hang)).get(lie);
-	}
-	
-	public DataBase() throws FileNotFoundException
-	{
-		
-		this.sqlyj("select * from children");
-	
-		}
-	public DataBase(String ss)
-	{
-		this.sqlyj(ss);
-	}
-	public String getColumnName(int e)
-	{
-		return (String)this.ziduan.get(e);
-	}
-	public void sqlyj(String sql)
-	{
-		ziduan=new Vector();
-		ziduan.add("Name");
-		ziduan.add("Image");
-		ziduan.add("Status");
-		ziduan.add("Age");
-		ziduan.add("Gender");
-		ziduan.add("States");		
-		
-        jilu=new Vector();
-		
-		try {
-	    	  Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-			  ct=DriverManager.getConnection("jdbc:hsqldb:file:db/file;shutdown=true", "sa", "");
-			  ps=ct.prepareStatement(sql);	
-			  rs=ps.executeQuery();
-			  
-			  while(rs.next())
-			  {
-				  Vector hang=new Vector();
-					hang.add(rs.getString(1));
-					hang.add(rs.getString(2));
-					hang.add(rs.getString(3));
-					hang.add(rs.getInt(4));
-					hang.add(rs.getString(5));
-					hang.add(rs.getString(6));
-					jilu.add(hang);
-			  }
-		} catch (Exception e){}
-	    finally
-	    {
-	    	try {
-	    		if(rs!=null)
-				{
-					rs.close();
-				}
-	    		if(ps!=null)
-				{
-					ps.close();
-				}
-				if(ct!=null)
-				{
-					ct.close();
-				}
-				
-			} catch (Exception e){}
-	    }
-	}
+import java.sql.SQLException;
+import java.sql.Statement;
+public class DataBase {
+    /**
+     * @param args
+     */
+    public static void main(String[] args){
+        try {
+                //加载HSQLDB数据库JDBC驱动
+                Class.forName("org.hsqldb.jdbcDriver");
+                //在内存中建立临时数据库score，用户名为sa，密码为空
+                @SuppressWarnings("unused")
+                Connection connect = DriverManager.getConnection("jdbc:hsqldb:file:db/file;shutdown=true", "sa", "");
+                System.out.println("Link is OK！");
+                
+                Statement state = connect.createStatement(); 
+                state.executeUpdate("drop table children if exists");
+                state.executeUpdate("create table children (Name VARCHAR(20), Image VARCHAR(20),Status VARCHAR(20),Age VARCHAR(20),Gender VARCHAR(20),states VARCHAR(20))");
+                System.out.println("Create is  OK！");
+                
+                state.executeUpdate("Insert into children (Name, Image,Status,Age,Gender,states) Values('sd', '潘永刚','sd', '潘永刚','sd', '潘永刚')");
+                state.executeUpdate("Insert into children (Name, Image,Status,Age,Gender,states) Values('sd', '刘德华','sd', '刘德华','sd', '刘德华')");
+                System.out.println("Insert is OK！");
+                
+                PreparedStatement pstmt2   =   connect.prepareStatement("select * from children");   
+                ResultSet rs = pstmt2.executeQuery();   
+                while(rs.next()){  
+                    String x;
+                    x = rs.getString(1) + "   " + rs.getString(2)+ "   " + rs.getString(3)+ "   " + rs.getString(4)+ "   " + rs.getString(5)+ "   " + rs.getString(6);                  
+                    System.out.println(x);                      
+                }   
+                System.out.println("Select is OK！");
+                pstmt2.close();
+                rs.close();
+                
+                state.close();
+                connect.close();
+                
+            } catch (SQLException e){
+                e.printStackTrace();
+            } catch (ClassNotFoundException e){
+                  e.printStackTrace();
+            }              
+    }
 }
-
