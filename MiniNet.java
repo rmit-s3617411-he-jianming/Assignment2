@@ -221,14 +221,42 @@ public class MiniNet extends JFrame implements ActionListener {
 
 		}
 		else if(e.getActionCommand().equals("ShowAll")){
-			control.childrenOutput="Name, Image, Status, Gender, Age, States\n";;
+			control.childrenOutput="Name, Image, Status, Gender, Age, States\n";
 			control.print();
 			wbk31.setText(control.childrenOutput);
 		}
 		else if(e.getActionCommand().equals("ShowRelationship")){
+			String a = null;
+			try
+			{
+				wjl=new FileReader("D:/IT/eclipse/HolidayPrac/src/MiniNet/relationship.txt");
+				hcl=new BufferedReader(wjl);
+				String s="",zfc="";
+				while((s=hcl.readLine())!=null)
+				{
+					zfc+=(s+"\n");
+				}
+				a ="basic relationship information:\n"+zfc;
+			}
+			catch(Exception aa){}
+			finally
+			{
+				try 
+				{
+					wjl.close();
+					hcl.close();
+				} 
+				catch (Exception e1) {}
+			}
 			String name =wbk11.getText();
-			control.childrenOutput="Name1, Name2, Relationship\n";;
+			control.childrenOutput=a+"\nName1, Name2, Relationship:\n";
 			control.showRelationship(name);
+			wbk31.setText(control.childrenOutput);
+		}else if(e.getActionCommand().equals("ShowConnectionChain")){
+			String name1 =wbk11.getText();
+			String name2 =wbk21.getText();
+			control.childrenOutput="RelationshipChain\n";
+			control.showConnectionChain(name1,name2);
 			wbk31.setText(control.childrenOutput);
 		}
 		else if(e.getActionCommand().equals("Delect")){
@@ -311,7 +339,20 @@ public class MiniNet extends JFrame implements ActionListener {
 				}
 		}
 		else if(e.getActionCommand().equals("Modify")){
-
+			String name = wbk41.getText();
+			String image = wbk42.getText();
+			String status = wbk43.getText();
+			String age1 = wbk44.getText();
+			int age = 0;
+			try {
+				age = Integer.parseInt(age1);
+			} catch (NumberFormatException e1) {
+				e1.printStackTrace();
+			}
+			String gender = wbk45.getText();
+			String states = wbk46.getText();
+			System.out.println(states);
+			control.updateProfile(name,image,status,gender,age,states);
 		}
 		else if(e.getActionCommand().equals("AddFather")){
 			String name = wbk41.getText();

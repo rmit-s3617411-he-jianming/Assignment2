@@ -19,6 +19,7 @@ abstract public class Person {//every person have name, age, status, friend, ima
 	private String gender;
 	HashMap colleague;
 	HashMap classmate;
+	HashMap relationshipChain;
 
 	public String getGender() {
 		return gender;
@@ -42,6 +43,7 @@ abstract public class Person {//every person have name, age, status, friend, ima
 		friend = new HashMap();
 		colleague = new HashMap();
 		classmate = new HashMap();
+		relationshipChain = new HashMap();
 	}
 
 	public void setName(String name) {
