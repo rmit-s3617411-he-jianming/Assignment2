@@ -238,56 +238,6 @@ public void print() {
 	}
 }
 
-//9.According to the selected name,display the list of friends
-public void display(String name) {
-	Children aa = (Children) children.get(name);
-	Iterator it = aa.friend.keySet().iterator();
-	while(it.hasNext()){
-		String key =it.next().toString();
-		Children children1 = (Children) children.get(key);
-		childrenOutput+= aa.getName()+","+children1.getName()+",friend\n";
-		System.out.println(childrenOutput);
-	}
-}
-
-//10.According to the selected name,display the couple
-public void showCouple(String name) {
-	Children aa = (Children) children.get(name);
-	childrenOutput+= aa.getName()+","+aa.getCouple()+",couple\n";
-	System.out.println(childrenOutput);
-}
-
-//11.According to the selected name,display the colleague
-public void showColleague(String name) {
-	Children aa = (Children) children.get(name);
-	Iterator it = aa.colleague.keySet().iterator();
-	while(it.hasNext()){
-		String key =it.next().toString();
-		Children children1 = (Children) children.get(key);
-		childrenOutput+= children1.toString()+"\n";
-		System.out.println(childrenOutput);
-	}
-}
-
-//12.According to the selected name,display the classmate
-public void showClassmate(String name) {
-	Children aa = (Children) children.get(name);
-	Iterator it = aa.classmate.keySet().iterator();
-	while(it.hasNext()){
-		String key =it.next().toString();
-		Children children1 = (Children) children.get(key);
-		childrenOutput+= children1.toString()+"\n";
-		System.out.println(childrenOutput);
-	}
-}
-
-//12.According to the selected name,display the parents
-public void showParents(String name) {
-	Children aa = (Children) children.get(name);
-	childrenOutput+= aa.getFather().toString()+"\n"+aa.getMother().toString();
-	System.out.println(childrenOutput);
-}
-
 //13.According to the selected name,display all relationship
 public void showRelationship(String name) {
 	int i =0;
